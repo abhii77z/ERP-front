@@ -20,7 +20,7 @@ export default function SuppliersPage() {
     const loadSuppliers = async () => {
       try {
         const data = await supplierService.getSuppliers();
-        setSuppliers(data);
+        setSuppliers(data.content);
       } catch (error) {
         console.error('Failed to fetch suppliers', error);
       } finally {

@@ -30,8 +30,8 @@ export default function CreateSalePage() {
           productService.getProducts(),
           customerService.getCustomers()
         ]);
-        setProducts(prodData.filter(p => p.stock > 0)); // Only show in-stock
-        setCustomers(custData);
+        setProducts(prodData.content.filter(p => p.stock > 0)); // Only show in-stock
+        setCustomers(custData.content);
       } catch (error) {
         console.error('Failed to fetch POS data', error);
       } finally {

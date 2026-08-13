@@ -15,7 +15,7 @@ export default function ExpensesPage() {
 
   useEffect(() => {
     expenseService.getExpenses().then(data => {
-      setExpenses(data);
+      setExpenses(data.content);
       setLoading(false);
     });
   }, []);

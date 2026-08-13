@@ -20,7 +20,7 @@ export default function CustomersPage() {
     const loadCustomers = async () => {
       try {
         const data = await customerService.getCustomers();
-        setCustomers(data);
+        setCustomers(data.content);
       } catch (error) {
         console.error('Failed to fetch customers', error);
       } finally {

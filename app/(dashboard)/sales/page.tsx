@@ -20,7 +20,7 @@ export default function SalesPage() {
     const loadSales = async () => {
       try {
         const data = await saleService.getSales();
-        setSales(data);
+        setSales(data.content);
       } catch (error) {
         console.error('Failed to fetch sales', error);
       } finally {

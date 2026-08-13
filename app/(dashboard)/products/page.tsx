@@ -20,7 +20,7 @@ export default function ProductsPage() {
     const loadProducts = async () => {
       try {
         const data = await productService.getProducts();
-        setProducts(data);
+        setProducts(data.content);
       } catch (error) {
         console.error('Failed to fetch products', error);
       } finally {

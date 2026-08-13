@@ -20,7 +20,7 @@ export default function InventoryPage() {
     const loadInventory = async () => {
       try {
         const data = await productService.getProducts();
-        setProducts(data);
+        setProducts(data.content);
       } catch (error) {
         console.error('Failed to fetch inventory', error);
       } finally {

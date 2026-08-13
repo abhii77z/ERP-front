@@ -15,7 +15,7 @@ export default function PurchasesPage() {
 
   useEffect(() => {
     purchaseService.getPurchases().then(data => {
-      setPurchases(data);
+      setPurchases(data.content);
       setLoading(false);
     });
   }, []);
