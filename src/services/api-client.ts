@@ -2,7 +2,33 @@ import { Product, Category, Customer, Supplier, Sale, Purchase, DashboardSummary
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 
+import * as mockData from '../mock/data';
+
 // ─── HTTP Helper ──────────────────────────────────────────────────────────────
+async function handleMockRequest(endpoint: string, options: RequestInit): Promise<any> {
+  console.warn(`Using mock data for ${endpoint}`);
+  await new Promise(resolve => setTimeout(resolve, 500)); // simulate network delay
+
+  if (endpoint === '/dashboard/summary') return mockData.mockDashboardData;
+  if (endpoint.startsWith('/products/low-stock')) return mockData.mockProducts.filter(p => p.stock <= p.minStock);
+  if (endpoint.startsWith('/products')) return { content: mockData.mockProducts };
+  if (endpoint.startsWith('/categories')) return mockData.mockCategories;
+  if (endpoint.startsWith('/sales')) return { content: mockData.mockSales };
+  if (endpoint.startsWith('/purchases')) return { content: mockData.mockPurchases };
+  if (endpoint.startsWith('/customers')) return { content: mockData.mockCustomers };
+  if (endpoint.startsWith('/suppliers')) return { content: mockData.mockSuppliers };
+  if (endpoint.startsWith('/expenses')) return { content: mockData.mockExpenses };
+  if (endpoint.startsWith('/employees')) return mockData.mockEmployees;
+  if (endpoint === '/auth/login') return { token: 'mock-token', name: 'Admin', email: 'admin@example.com', role: 'ADMIN', id: 1 };
+  if (endpoint === '/auth/me') return { name: 'Admin', email: 'admin@example.com', role: 'ADMIN' };
+  
+  // Basic mock responses for other endpoints to prevent crashes
+  if (endpoint.startsWith('/inventory')) return [];
+  if (endpoint.startsWith('/reports')) return [];
+
+  throw new Error(`Mock not implemented for ${endpoint}`);
+}
+
 async function request<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -15,18 +41,26 @@ async function request<T>(
     ...((options.headers as Record<string, string>) || {}),
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
 
-  const json = await response.json();
+    const json = await response.json();
 
-  if (!response.ok) {
-    throw new Error(json.message || `HTTP error: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(json.message || `HTTP error: ${response.status}`);
+    }
+
+    return json.data;
+  } catch (error) {
+    const isMockEnabled = process.env.NEXT_PUBLIC_USE_MOCK_DATA !== 'false';
+    if (isMockEnabled) {
+      return handleMockRequest(endpoint, options) as Promise<T>;
+    }
+    throw error;
   }
-
-  return json.data;
 }
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
