@@ -1,4 +1,4 @@
-import { Product, Category, Customer, Supplier, Sale, Purchase, DashboardSummary, Expense } from '../types';
+import { Product, Category, Customer, Supplier, Sale, Purchase, DashboardSummary, Expense, User } from '../types';
 import * as mockData from '../mock/data';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL 
@@ -224,4 +224,13 @@ export const reportService = {
 
   getProfitLossReport: (from: string, to: string) =>
     request(`/reports/profit-loss?from=${from}&to=${to}`),
+};
+
+// ─── Users ────────────────────────────────────────────────────────────────────
+export const userService = {
+  getUsers: (): Promise<User[]> =>
+    request<User[]>('/users'),
+
+  verifyUser: (id: string): Promise<User> =>
+    request<User>(`/users/${id}/verify`, { method: 'PUT' }),
 };

@@ -32,6 +32,7 @@ const navItems = [
   { name: 'Expenses', href: '/expenses', icon: CreditCard },
   { name: 'Employees', href: '/employees', icon: Users2 },
   { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: 'Verify Users', href: '/users/verify', icon: Users },
 ];
 
 export function Sidebar() {

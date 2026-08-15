@@ -5,7 +5,7 @@ export interface User {
   name: string;
   email: string;
   role: Role;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
   lastLogin?: string;
 }
 
