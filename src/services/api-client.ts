@@ -1,7 +1,9 @@
 import { Product, Category, Customer, Supplier, Sale, Purchase, DashboardSummary, Expense } from '../types';
 import * as mockData from '../mock/data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+  ? `${process.env.NEXT_PUBLIC_API_URL}/api`
+  : 'http://localhost:8080/api';
 
 // ─── HTTP Helper ──────────────────────────────────────────────────────────────
 async function handleMockRequest(endpoint: string, _options: RequestInit): Promise<any> {
